@@ -3,6 +3,7 @@
 <span>Query Time : </span>
 {{$queryTime}}
 <br>
+
 <tr>
     <td colspan="5">{{ $users->setPath('users') }}</td>
 </tr>
@@ -21,9 +22,9 @@
     </tr>
     </thead>
     <tbody>
-    @foreach($users as $user)
+    @foreach($users as $key=> $user)
         <tr>
-            <td>{{ $loop->iteration or $user->id }}</td>
+            <td>{{ ++$key }}</td>
             <td>{{ $user->displayName }}</td>
             <td>{{ $user->email }}</td>
 

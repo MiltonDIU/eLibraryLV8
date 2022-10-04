@@ -23,9 +23,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($sisterconcern as $item)
+                                @foreach($sisterconcern as $key=>$item)
                                     <tr>
-                                        <td>{{ $loop->iteration or $item->id }}</td>
+                                        <td>{{ ++$key }}</td>
                                         <td>{{ $item->concernName }}</td><td>{{ $item->emailDomain }}</td><td>{{ $item->concernAuthorityEmail }}</td>
                                         <td>
                                             <a href="{{ url('/admin/sister-concern/' . $item->id) }}" title="View SisterConcern"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> View</button></a>

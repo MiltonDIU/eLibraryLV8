@@ -23,9 +23,9 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($roles as $item)
+                        @foreach($roles as $key=>$item)
                             <tr>
-                                <td>{{ $loop->iteration or $item->id }}</td>
+                                <td>{{ ++$key }}</td>
                                 <td>{{ $item->name }}</td>
                                 <td>{{ $item->alias }}</td>
                                 <td>

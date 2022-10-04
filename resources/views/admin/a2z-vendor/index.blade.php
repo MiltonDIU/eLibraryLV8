@@ -21,9 +21,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($a2zvendor as $item)
+                                @foreach($a2zvendor as $key=>$item)
                                     <tr>
-                                        <td>{{ $loop->iteration or $item->id }}</td>
+                                        <td>{{ ++$key }}</td>
                                         <td>{{ $item->a2zVendorName }}</td>
                                         <td>
                                             <a href="{{ url('/admin/a2z-vendor/' . $item->id) }}" title="View A2zVendor"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> View</button></a>

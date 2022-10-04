@@ -21,9 +21,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($rating as $item)
+                                @foreach($rating as $key=>$item)
                                     <tr>
-                                        <td>{{ $loop->iteration or $item->id }}</td>
+                                        <td>{{ ++$key }}</td>
                                         <td>{{ $item->ratingName }}</td><td>{{ $item->image }}</td>
                                         <td>
                                             <a href="{{ url('/admin/rating/' . $item->id) }}" title="View Rating"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> View</button></a>

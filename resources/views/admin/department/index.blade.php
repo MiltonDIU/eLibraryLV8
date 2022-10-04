@@ -22,9 +22,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($departments as $item)
+                                @foreach($departments as $key=>$item)
                                     <tr>
-                                        <td>{{ $loop->iteration or $item->id }}</td>
+                                        <td>{{ ++$key }}</td>
                                         <td>{{ $item->departmentName }}</td><td>{{ $item->deptShortName }}</td>
                                         <td>
                                             <a href="{{ url('/admin/department/' . $item->id) }}" title="View department"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> View</button></a>

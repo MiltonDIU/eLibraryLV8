@@ -24,9 +24,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($semesters as $semester)
+                                @foreach($semesters as $key=>$semester)
                                     <tr>
-                                        <td>{{ $loop->iteration or $item->id }}</td>
+                                        <td>{{ ++$key }}</td>
                                         <td>{{ $semester->name }}</td>
                                         <td>{{ $semester->code }}</td>
                                         <td>{{ $semester->semester_year }}</td>

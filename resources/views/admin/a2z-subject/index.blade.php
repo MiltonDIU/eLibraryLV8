@@ -23,9 +23,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($a2zsubject as $item)
+                                @foreach($a2zsubject as $key=>$item)
                                     <tr>
-                                        <td>{{ $loop->iteration or $item->id }}</td>
+                                        <td>{{ ++$key }}</td>
                                         <td>{{ $item->a2zSubjectName }}</td>
                                         <td>
                                             <a href="{{ url('/admin/a2z-subject/' . $item->id) }}" title="View A2zSubject"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> View</button></a>

@@ -25,9 +25,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($servicecategory as $item)
+                                @foreach($servicecategory as $key=>$item)
                                     <tr>
-                                        <td>{{ $loop->iteration or $item->id }}</td>
+                                        <td>{{ ++$key }}</td>
                                         <td>{{ $item->serviceCategory }}</td>
                                         <td>{{ $item->image }}</td>
                                         <td>{{ $item->serviceCategoryShort }}</td>

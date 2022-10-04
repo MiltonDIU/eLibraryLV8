@@ -24,9 +24,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($publisher as $item)
+                                @foreach($publisher as $key=>$item)
                                     <tr>
-                                        <td>{{ $loop->iteration or $item->id }}</td>
+                                        <td>{{ ++$key }}</td>
                                         <td>{{ $item->publisherName }}</td><td>{{ $item->publisherPhone }}</td><td>{{ $item->publisherEmail }}</td>
                                         <td>
                                             <a href="{{ url('/admin/publisher/' . $item->id) }}" title="View publisher"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> View</button></a>

@@ -36,9 +36,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($author as $item)
+                                @foreach($author as $key=>$item)
                                     <tr>
-                                        <td>{{ $loop->iteration or $item->id }}</td>
+                                        <td>{{ ++$key }}</td>
                                         <td>{{ $item->authorName }}</td><td>{{ $item->email }}</td>
                                         <td>
                                             <a href="{{ url('/admin/author/' . $item->id) }}" title="View author"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> View</button></a>

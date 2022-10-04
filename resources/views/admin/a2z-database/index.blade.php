@@ -35,9 +35,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($a2zdatabase as $item)
+                                @foreach($a2zdatabase as $key=>$item)
                                     <tr>
-                                        <td>{{ $loop->iteration or $item->id }}</td>
+                                        <td>{{ ++$key }}</td>
                                         <td>{{ $item->a2zTitle }}</td>
                                         <td>
                                             {{substr($item->a2zDescription, 0, 120)}}

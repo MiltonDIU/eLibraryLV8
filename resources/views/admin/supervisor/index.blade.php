@@ -26,9 +26,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($supervisors as $supervisor)
+                                @foreach($supervisors as $key=>$supervisor)
                                     <tr>
-                                        <td>{{ $loop->iteration or $item->id }}</td>
+                                        <td>{{ ++$key }}</td>
                                         <td>{{ $supervisor->name }}</td>
                                         <td>{{ $supervisor->department->departmentName }}</td>
                                         <td>{{ $supervisor->email }}</td>

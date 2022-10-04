@@ -23,9 +23,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($itemstandardnumber as $item)
+                                @foreach($itemstandardnumber as $key=>$item)
                                     <tr>
-                                        <td>{{ $loop->iteration or $item->id }}</td>
+                                        <td>{{ ++$key }}</td>
                                         <td>{{ $item->itemStandardName }}</td>
                                         <td>
                                             <a href="{{ url('/admin/item-standard-number/' . $item->id) }}" title="View itemStandardNumber"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> View</button></a>

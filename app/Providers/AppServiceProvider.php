@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-
+use Illuminate\Pagination\Paginator;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -26,5 +26,6 @@ class AppServiceProvider extends ServiceProvider
         $loader = \Illuminate\Foundation\AliasLoader::getInstance();
         $loader->alias('Service', 'App\Helpers\SettingsHelper');
         $loader->alias('FrontEnd', 'App\Helpers\FrontEndHelper');
+        Paginator::useBootstrap();
     }
 }

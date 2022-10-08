@@ -3,12 +3,16 @@
     <div class="row">
         <div class="col-md-3 col-sm-4">
             <a href="{{url('service/'.$item->category->itemCategoryShort.'/'.$item->slug)}}">
-                @if (!$item->imageUrl == null)
-                    <img class='img-responsive item-cover-image' alt='' src="{{url($item->imageUrl)}}">
+
+                @if (!$item->coverImageFullUrl == null)
+                    <img class='img-responsive item-cover-image' alt="{{ $item->title }}" src="{{url($item->coverImageFullUrl)}}">
+
+                @elseif (!$item->imageUrl == null)
+                    <img class='img-responsive item-cover-image' alt="{{ $item->title }}" src="{{url($item->imageUrl)}}">
                 @else
-                    <img class='img-responsive item-cover-image' alt=''
-                         src="{{url('uploads/item/covers', $item->uploadImageUrl)}}">
+                    <img class='img-responsive item-cover-image' alt="{{ $item->title }}" src="{{url('uploads/item/covers', $item->uploadImageUrl)}}">
                 @endif
+
             </a>
         </div>
         <div class="col-md-9 col-sm-8">

@@ -138,7 +138,7 @@ Route::get('register/verifyActive/{token}', 'App\Http\Controllers\Auth\\Register
 
 Route::get('/service/{id}', [FrontEndController::class, 'serviceItem']);
 Route::get('/category/{id}', [FrontEndController::class, 'departmentItem']);
-Route::get('/dept-search', [FrontEndController::class, 'searchDepartment']);
+Route::post('/dept-search', [FrontEndController::class, 'searchDepartment']);
 Route::get('/year/{id}', [FrontEndController::class, 'yearItem']);
 Route::get('/author/{id}', [FrontEndController::class, 'authorItem']);
 

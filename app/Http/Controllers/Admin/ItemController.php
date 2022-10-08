@@ -477,7 +477,7 @@ class ItemController extends Controller
                $existing = "uploads/item/covers/".$item->uploadImageUrl;
                $source_file = public_path($existing);
                if (file_exists($source_file)){
-                   $i++;
+
                    $data = $this->makeFilePath("uploads/item/covers",$item->created_at->year,$item->created_at->month);
                    $destination_path = $data['uploadPath'].'/'.$item->uploadImageUrl;
                   // dd($source_file);
@@ -485,9 +485,10 @@ class ItemController extends Controller
                        echo "File can't be copied! \n";
                    }
                    else {
+                       $i++;
                        echo "File has been copied! \n";
-//                       $requestData['coverImageFullUrl']=$data['dbPath'].'/'.$item->uploadImageUrl;
-//                       $item->update($requestData);
+                       $requestData['coverImageFullUrl']=$data['dbPath'].'/'.$item->uploadImageUrl;
+                       $item->update($requestData);
                        unlink($source_file);
                    }
                }

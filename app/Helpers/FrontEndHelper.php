@@ -176,7 +176,7 @@ $i=0;
         $result = "<div class='row'>";
         foreach ($services as $item) {
 
-            
+
             if ($service1 % 4 == 0) {
                 $col = 3;
             } elseif ($service1 % 4 == 1) {
@@ -192,7 +192,7 @@ $i=0;
                     $col = 6;
                 }
             }
-            
+
 
             // if ($service1 % 3 == 0) {
             //     $col = 3;
@@ -447,10 +447,13 @@ $i=0;
     {
         $result = "";
         $result .= '<div class="row"><div class="col-md-3 col-sm-4">';
-        if (!$item->imageUrl == null) {
-            $result .= "<img class='img-responsive item-cover-image' alt='' src=" . $item->imageUrl . ">";
+        if (!$item->coverImageFullUrl == null) {
+            $result .= "<img class='img-responsive item-cover-image' aalt=" . $item->title . "  src=" . url( $item->coverImageFullUrl) . ">";
+        }
+        else if (!$item->imageUrl == null) {
+            $result .= "<img class='img-responsive item-cover-image' alt=" . $item->title . "  src=" . $item->imageUrl . ">";
         } else {
-            $result .= "<img class='img-responsive item-cover-image' alt='' src=" . url('uploads/item/covers', $item->uploadImageUrl) . ">";
+            $result .= "<img class='img-responsive item-cover-image' alt=" . $item->title . "  src=" . url('uploads/item/covers', $item->uploadImageUrl) . ">";
         }
         $result .= FrontEndHelper::itemViewReport($item, $years);
         $result .= '</div><div class="col-md-9 col-sm-8">';

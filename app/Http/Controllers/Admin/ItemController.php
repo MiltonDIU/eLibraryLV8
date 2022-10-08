@@ -354,12 +354,12 @@ class ItemController extends Controller
             $request->file('pdfUrl')->move($data['uploadPath'], $fileName);
             $requestData['pdfUrl'] = $fileName;
             $requestData['pdfFullUrl'] = $data['dbPath'].'/'.$fileName;
-//            if ($item->pdfFullUrl != null) {
-//                $existingPath = $item->pdfFullUrl;
-//                if (file_exists( $existingPath)){
-//                    unlink(public_path($existingPath));
-//                }
-//            }
+            if ($item->pdfFullUrl != null) {
+                $existingPath = $item->pdfFullUrl;
+                if (file_exists( $existingPath)){
+                    unlink(public_path($existingPath));
+                }
+            }
 
         }
 
@@ -372,12 +372,12 @@ class ItemController extends Controller
             $request->file('uploadImageUrl')->move($data['uploadPath'], $fileName);
             $requestData['uploadImageUrl'] = $fileName;
            $requestData['coverImageFullUrl'] = $data['dbPath'].'/'.$fileName;
-//           if ($item->coverImageFullUrl != null) {
-//               $existingPath = $item->coverImageFullUrl;
-//               if (file_exists( $existingPath)){
-//                   unlink($existingPath);
-//               }
-//           }
+           if ($item->coverImageFullUrl != null or $item->coverImageFullUrl != null) {
+               $existingPath = $item->coverImageFullUrl;
+               if (file_exists( $existingPath)){
+                   unlink($existingPath);
+               }
+           }
         }
        // $requestData['user_id'] = Auth::id();
         $item->update($requestData);
@@ -472,13 +472,13 @@ class ItemController extends Controller
        $items = Item::all();
        $i=$j=0;
        foreach ($items as $key=>$item){
-           if ($item->uploadImageUrl!=null){
+           if ($item->uploadImageUrl!=null and $item->coverImageFullUrl==null){
                $j++;
                $existing = "uploads/item/covers/".$item->uploadImageUrl;
                $source_file = public_path($existing);
                if (file_exists($source_file)){
 
-                   $data = $this->makeFilePath("uploads/item/covers",$item->created_at->year,$item->created_at->month);
+                   $data = $this->makeFilePath("uploads/item_images",$item->created_at->year,$item->created_at->month);
                    $destination_path = $data['uploadPath'].'/'.$item->uploadImageUrl;
                   // dd($source_file);
                    if( !copy($source_file, $destination_path) ) {
@@ -486,40 +486,43 @@ class ItemController extends Controller
                    }
                    else {
                        $i++;
-                       echo "File has been copied! \n";
+                       //echo "File has been copied! \n";
                        $requestData['coverImageFullUrl']=$data['dbPath'].'/'.$item->uploadImageUrl;
+                       $requestData['image_status']='1';
                        $item->update($requestData);
-                       unlink($source_file);
+                       //unlink($source_file);
                    }
                }
            }
        }
-       echo $i.'='.$j;
+       echo $i.'='.$j.", Final total = ".count($items);
    }
     public function filePath(){
         $items = Item::all();
-        $i=0;
+        $i=$j=0;
         foreach ($items as $key=>$item){
-            if ($item->pdfUrl!=null){
+            if ($item->pdfUrl!=null and $item->pdfFullUrl==null){
+                $j++;
                 $existing = "/uploads/item/".$item->pdfUrl;
                 $source_file = public_path($existing);
                 if (file_exists($source_file)){
-                    $i++;
-                    $data = $this->makeFilePath("uploads/item",$item->created_at->year,$item->created_at->month);
+                    $data = $this->makeFilePath("uploads/item_pdf",$item->created_at->year,$item->created_at->month);
                     $destination_path = $data['uploadPath'].'/'.$item->pdfUrl;
                     if( !copy($source_file, $destination_path) ) {
                         echo "File can't be copied! <br>";
                     }
                     else {
-                        //echo "$destination_path File has been copied! <br>";
+                        $i++;
+                        //echo "File has been copied! <br>";
                         $requestData['pdfFullUrl']=$data['dbPath'].'/'.$item->pdfUrl;
+                        $requestData['pdf_status']='1';
                         $item->update($requestData);
-                        unlink($source_file);
+                        //unlink($source_file);
                     }
                 }
             }
         }
-        echo $i;
+        echo $i.'='.$j.", Final total = ".count($items);
     }
     public function makeFilePath($path,$year,$month){
         $year_path = public_path($path.'/'.$year);

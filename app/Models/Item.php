@@ -8,7 +8,7 @@ class Item extends Model
 {
     protected $table="items";
     protected $fillable = [
-        'publisher_id', 'category_id','pdfFullUrl','coverImageFullUrl', 'item_standard_number_id', 'title', 'edition', 'itemStandardNumberValue','itemStandardNumberValue2', 'issue', 'keywords', 'summary', 'imageUrl', 'pdfUrl', 'isPublished', 'publicationYear', 'placeOfPublication', 'uploadImageUrl', 'slug', 'user_id','ip_address'
+        'image_status','pdf_status','publisher_id', 'category_id','pdfFullUrl','coverImageFullUrl', 'item_standard_number_id', 'title', 'edition', 'itemStandardNumberValue','itemStandardNumberValue2', 'issue', 'keywords', 'summary', 'imageUrl', 'pdfUrl', 'isPublished', 'publicationYear', 'placeOfPublication', 'uploadImageUrl', 'slug', 'user_id','ip_address'
     ];
 
     public function publisher()

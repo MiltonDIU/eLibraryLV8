@@ -304,11 +304,11 @@
                 </div>
             </div>
         </div>
-        
+
     </div>
-    
-    
-    
+
+
+
        <div class="row">
         <div class="col-md-5 ">
             <div class="card">
@@ -320,7 +320,7 @@
                             <tr>
                                 <th>Month</th>
                                 <th>Total Users</th>
-                            
+
                             </tr>
                             </thead>
                             <tbody>
@@ -348,12 +348,12 @@
                         <table class="table table-borderless file-upload">
                             <thead>
                             <tr>
-                                
+
                                 <th>Month</th>
                                 <th>Per Month Downloads</th>
                                 <th>Total Download</th>
                             </tr>
-                            
+
                             </thead>
                             <tbody>
                                      @php
@@ -365,15 +365,15 @@
                                 <tr>
                                     <td>{{$key}}</td>
                                     <td>{{$month_wise_downloads[$key]->count()}}</td>
-                                    
+
                                     @php
                                         $total_download +=$month_wise_downloads[$key]->count();
                                      @endphp
                                      <td>{{$total_download}}</td>
                                 </tr>
-                                
+
                             @endforeach
-                 
+
 
                             </tbody>
 
@@ -382,9 +382,9 @@
                 </div>
             </div>
         </div>
-        
+
     </div>
-    
+
 
 
 
@@ -416,6 +416,8 @@
     <link rel="stylesheet" type="text/css" href="{{url('assets/datatable/css/buttons.dataTables.min.css')}}"/>
      <style>
         .dataTables_filter{text-align: left!important}
+        .col-md-3 a{text-decoration:none;}
+        .widget-thumb-body{line-height:55px;}
     </style>
 @endpush
 

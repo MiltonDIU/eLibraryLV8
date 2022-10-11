@@ -71,12 +71,13 @@
 
             <a class='more btn btn-cool-blues' href="{{url('service/'.$item->category->itemCategory.'/'.$item->slug)}}">Read more<i
                         class='fa fa-angle-double-right'></i></a>
-            @if(!$item->pdfUrl == null)
+            @if((!$item->pdfFullUrl == null) and (file_exists(public_path($item->pdfFullUrl))==true))
                 {!! Form::open(['url' => '/download/' . $item->id . '/' . $item->slug, 'class' => 'form-horizontal download-form', 'name' => $item->id]) !!}
                 <input type='hidden' name='id' value="{{$item->id}}">
                 <input type='hidden' name='slug' value="{{$item->slug}}">
                 <a class="btn btn-dark-blue" href="{{url('download/'.$item->id.'/'.$item->slug)}}"><i class='fa fa-download'></i>
                     <input type='submit' class='download' value='Download'>
+
                 </a>
 
                 {!! Form::close() !!}

@@ -129,7 +129,7 @@ class ItemController extends Controller
         if ($request['q']) {
             $data = $request['q'];
             $items = Item::where('itemStandardNumberValue',$data)->first();
-                return $items;
+            return $items;
         }
 
     }
@@ -198,21 +198,22 @@ class ItemController extends Controller
 
         if ($request->hasFile('pdfUrl')) {
 //            $uploadPath = public_path('/uploads/item');
-            $data = $this->makeFolder('/uploads/item');
+            $data = $this->makeFolder('/uploads/item_pdf');
             $extension = $request->file('pdfUrl')->getClientOriginalExtension();
             $fileName = rand(1111111, 9999999) . '.' . $extension;
             $request->file('pdfUrl')->move($data['uploadPath'], $fileName);
             $requestData['pdfUrl'] = $fileName;
-            $requestData['pdfFullUrl'] = $data['uploadPath'].'/'.$fileName;
+            $requestData['pdfFullUrl'] = $data['dbPath'].'/'.$fileName;
         }
         if ($request->hasFile('uploadImageUrl')) {
 //            $uploadPath = public_path('/uploads/item/covers');
-            $data = $this->makeFolder('/uploads/item/covers');
+            $data = $this->makeFolder('/uploads/item_images');
             $extension = $request->file('uploadImageUrl')->getClientOriginalExtension();
             $fileName = rand(1111111, 9999999) . '.' . $extension;
             $request->file('uploadImageUrl')->move($data['uploadPath'], $fileName);
             $requestData['uploadImageUrl'] = $fileName;
-            $requestData['coverImageFullUrl'] = $data['uploadPath'].'/'.$fileName;
+            $requestData['coverImageFullUrl'] = $data['dbPath'].'/'.$fileName;
+
         }
         $requestData['user_id'] = Auth::id();
         $requestData['slug'] = Str::slug($requestData['title'], '-');
@@ -348,7 +349,7 @@ class ItemController extends Controller
         $item = Item::findOrFail($id);
         if ($request->hasFile('pdfUrl')) {
 //            $uploadPath = public_path('/uploads/item');
-            $data = $this->makeFolder('uploads/item');
+            $data = $this->makeFolder('uploads/item_pdf');
             $extension = $request->file('pdfUrl')->getClientOriginalExtension();
             $fileName = rand(1111111, 9999999) . '.' . $extension;
             $request->file('pdfUrl')->move($data['uploadPath'], $fileName);
@@ -363,23 +364,23 @@ class ItemController extends Controller
 
         }
 
-       if ($request->hasFile('uploadImageUrl')) {
+        if ($request->hasFile('uploadImageUrl')) {
 //            $uploadPath = public_path('/uploads/item/covers');
-           $data = $this->makeFolder('uploads/item/covers');
+            $data = $this->makeFolder('uploads/item_images');
 
             $extension = $request->file('uploadImageUrl')->getClientOriginalExtension();
             $fileName = rand(1111111, 9999999) . '.' . $extension;
             $request->file('uploadImageUrl')->move($data['uploadPath'], $fileName);
             $requestData['uploadImageUrl'] = $fileName;
-           $requestData['coverImageFullUrl'] = $data['dbPath'].'/'.$fileName;
-           if ($item->coverImageFullUrl != null or $item->coverImageFullUrl != null) {
-               $existingPath = $item->coverImageFullUrl;
-               if (file_exists( $existingPath)){
-                   unlink($existingPath);
-               }
-           }
+            $requestData['coverImageFullUrl'] = $data['dbPath'].'/'.$fileName;
+            if ($item->coverImageFullUrl != null or $item->coverImageFullUrl != null) {
+                $existingPath = $item->coverImageFullUrl;
+                if (file_exists( $existingPath)){
+                    unlink($existingPath);
+                }
+            }
         }
-       // $requestData['user_id'] = Auth::id();
+        // $requestData['user_id'] = Auth::id();
         $item->update($requestData);
         if ($request->category_id==7){
             $itemSearch = ItemSemesterSupervisor::where('item_id',$id)->first();
@@ -439,67 +440,73 @@ class ItemController extends Controller
 
 
     public function select2(){
-      return view('admin.item.select2');
-   }
+        return view('admin.item.select2');
+    }
 
-   /*
-   AJAX request
-   */
-   public function getAuthors(Request $request){
+    /*
+    AJAX request
+    */
+    public function getAuthors(Request $request){
 
-      $search = $request->search;
+        $search = $request->search;
 
-      if($search == ''){
-         $employees = Author::orderby('authorName','asc')->select('id','authorName')->limit(50)->get();
-      }else{
-         $employees = Author::orderby('authorName','asc')->select('id','authorName')->where('authorName', 'like', '%' .$search . '%')->limit(50)->get();
-      }
-      $response = array();
-      foreach($employees as $employee){
-         $response[] = array(
-              "id"=>$employee->id,
-              "text"=>$employee->authorName
-         );
-      }
+        if($search == ''){
+            $employees = Author::orderby('authorName','asc')->select('id','authorName')->limit(50)->get();
+        }else{
+            $employees = Author::orderby('authorName','asc')->select('id','authorName')->where('authorName', 'like', '%' .$search . '%')->limit(50)->get();
+        }
+        $response = array();
+        foreach($employees as $employee){
+            $response[] = array(
+                "id"=>$employee->id,
+                "text"=>$employee->authorName
+            );
+        }
 
-      echo json_encode($response);
-      exit;
-   }
-
+        echo json_encode($response);
+        exit;
+    }
 
 //used single time only make folder and file transfer related methods
-   public function coverPath(){
-       $items = Item::all();
-       $i=$j=0;
-       foreach ($items as $key=>$item){
-           if ($item->uploadImageUrl!=null and $item->coverImageFullUrl==null){
-               $j++;
-               $existing = "uploads/item/covers/".$item->uploadImageUrl;
-               $source_file = public_path($existing);
-               if (file_exists($source_file)){
+    public function coverPath(){
+        $items = Item::all();
+        $i=$j=0;
+        $data=array();
+        foreach ($items as $key=>$item){
+            if ($item->uploadImageUrl!=null and $item->coverImageFullUrl==null){
+                $j++;
+                $existing = "uploads/item/covers/".$item->uploadImageUrl;
+                $source_file = public_path($existing);
+                if (file_exists($source_file)){
 
-                   $data = $this->makeFilePath("uploads/item_images",$item->created_at->year,$item->created_at->month);
-                   $destination_path = $data['uploadPath'].'/'.$item->uploadImageUrl;
-                  // dd($source_file);
-                   if( !copy($source_file, $destination_path) ) {
-                       echo "File can't be copied! \n";
-                   }
-                   else {
-                       $i++;
-                       //echo "File has been copied! \n";
-                       $requestData['coverImageFullUrl']=$data['dbPath'].'/'.$item->uploadImageUrl;
-                       $requestData['image_status']='1';
-                       $item->update($requestData);
-                       //unlink($source_file);
-                   }
-               }
-           }
-       }
-       echo $i.'='.$j.", Final total = ".count($items);
-   }
+                    $data = $this->makeFilePath("uploads/item_images",$item->created_at->year,$item->created_at->month);
+                    $destination_path = $data['uploadPath'].'/'.$item->uploadImageUrl;
+                    // dd($source_file);
+                    if( !copy($source_file, $destination_path) ) {
+                        echo "File can't be copied! \n";
+                    }
+                    else {
+                        $i++;
+                        //echo "File has been copied! \n";
+                        $requestData['coverImageFullUrl']=$data['dbPath'].'/'.$item->uploadImageUrl;
+                        $requestData['image_status']='1';
+                        $item->update($requestData);
+                        unlink($source_file);
+                    }
+                }
+                if ($item->imageUrl==null){
+                    array_push($data,$item);
+                }
+
+            }
+        }
+        return view('admin.report.item_image_pdf_not_found',compact('data'));
+        //echo $i.'='.$j.", Final total = ".count($items);
+    }
     public function filePath(){
         $items = Item::all();
         $i=$j=0;
+        $data=array();
         foreach ($items as $key=>$item){
             if ($item->pdfUrl!=null and $item->pdfFullUrl==null){
                 $j++;
@@ -517,13 +524,21 @@ class ItemController extends Controller
                         $requestData['pdfFullUrl']=$data['dbPath'].'/'.$item->pdfUrl;
                         $requestData['pdf_status']='1';
                         $item->update($requestData);
-                        //unlink($source_file);
+                        unlink($source_file);
                     }
                 }
+                array_push($data,$item);
             }
         }
-        echo $i.'='.$j.", Final total = ".count($items);
+
+
+        return view('admin.report.item_image_pdf_not_found',compact('data'));
+        //echo $i.'='.$j.", Final total = ".count($items);
     }
+    //end file and image transfer
+
+
+// make a file path
     public function makeFilePath($path,$year,$month){
         $year_path = public_path($path.'/'.$year);
         $dbPath = $path.'/'.$year;

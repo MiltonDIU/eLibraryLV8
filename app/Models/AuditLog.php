@@ -15,6 +15,6 @@ class AuditLog extends Model
         return $this->belongsTo('App\Models\Service');
     }
     public function user(){
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\User')->orderBy('id','desc');
     }
 }

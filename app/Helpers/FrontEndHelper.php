@@ -472,7 +472,7 @@ $i=0;
         $result .= "</li>";
         $result .= "</ul>";
         $result .= "<p>$item->summary</p>";
-        if (!$item->pdfUrl == null) {
+        if((!$item->pdfFullUrl == null) and (file_exists(public_path($item->pdfFullUrl))==true)){
             $result .= Form::open(['url' => '/download/' . $item->id . '/' . $item->slug, 'class' => 'form-horizontal download-form', 'name' => $item->id]);
             $result .= "<a class='btn btn-dark-blue' href=" . url('download') . '/' . $item->id . '/' . $item->slug . "><i class='fa fa-download'></i>";
             $result .= "<input type='hidden' name='id' value=" . $item->id . "><input type='hidden' name='slug' value=" . $item->slug . "><input type='submit' class='download' value='Download'>";
@@ -514,7 +514,10 @@ $i=0;
 
     public static function recentVisitors()
     {
-        $users = AuditLog::with('user')->distinct()->get(['user_id'])->take(5);
+        $users = AuditLog::with('user')
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->unique('user_id')->take(5);
         return $users;
     }
 

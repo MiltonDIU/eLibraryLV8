@@ -18,9 +18,9 @@ use File;
 class HomeController extends Controller
 {
     public function __construct()
-      {
-          $this->middleware('auth');
-      }
+    {
+        $this->middleware('auth');
+    }
     public function index()
     {
         return view('member.layouts.member');
@@ -65,69 +65,70 @@ class HomeController extends Controller
 
     public function getDownload(Request $request)
     {
-        
+
         $id = $request->input('id');
         $slug = $request->input('slug');
         $item = Item::where('id', $id)->where('slug', $slug)->first();
-        $file = public_path() . "/uploads/item/$item->pdfUrl";
+        $file = public_path() . "/$item->pdfFullUrl";
+
         $download = User::withCount('items')->where('id',Auth::id())->first();
-if ($download->download > $download->items_count){
-    if(file_exists($file)){
-        $ext = pathinfo($item->pdfUrl, PATHINFO_EXTENSION);
-        $data['item_id'] = $id;
-        $data['user_id'] = Auth::id();
-        ItemUser::create($data);
-        if($download->items_count==0){
-            $notification = array(
-                'message' => "Welcome to download the book from our system, you can download Maxim  $download->download books from our system.",
-                'alert-type' => 'success'
-            );
-            Session::flash('notification',$notification);
+        if ($download->download > $download->items_count){
+            if(file_exists($file)){
+                $ext = pathinfo($item->pdfFullUrl, PATHINFO_EXTENSION);
+                $data['item_id'] = $id;
+                $data['user_id'] = Auth::id();
+                ItemUser::create($data);
+                if($download->items_count==0){
+                    $notification = array(
+                        'message' => "Welcome to download the book from our system, you can download Maxim  $download->download books from our system.",
+                        'alert-type' => 'success'
+                    );
+                    Session::flash('notification',$notification);
+                }else{
+                    $notification = array(
+                        'message' => "You can download up to $download->download books, you are already downloaded $download->items_count books",
+                        'alert-type' => 'success'
+                    );
+                    Session::flash('notification',$notification);
+                }
+                return Response::download($file, "$item->title.$ext");
+
+            }else{
+                $notification = array(
+                    'message' => "Your file has been not created! please contact with library.",
+                    'alert-type' => 'success'
+
+                );
+                Session::flash('notification',$notification);
+                return redirect()->back();
+            }
         }else{
             $notification = array(
-                'message' => "You can download up to $download->download books, you are already downloaded $download->items_count books",
+                'message' => "You can  over your maximum $download->download books, but if you still want to download please contact the Library Officer's or Submit the request through Feedback",
                 'alert-type' => 'success'
             );
             Session::flash('notification',$notification);
+            return redirect()->back();
+
+
+            //  $id = $request->input('id');
+            // $slug = $request->input('slug');
+            // $item = Item::where('id', $id)->where('slug', $slug)->first();
+            // $file = public_path() . "/uploads/item/$item->pdfUrl";
+            // if(file_exists($file)){
+            //     $ext = pathinfo($item->pdfUrl, PATHINFO_EXTENSION);
+            //     $data['item_id'] = $id;
+            //     $data['user_id'] = Auth::id();
+            //     ItemUser::create($data);
+            //     return Response::download($file, "$item->title.$ext");
+            // }else{
+            //     $notification = array(
+            //         'message' => "Your file has been not created! please contact with library.",
+            //         'alert-type' => 'success'
+            //     );
+            //     Session::flash('notification',$notification);
+            //     return redirect()->back();
         }
-        return Response::download($file, "$item->title.$ext");
-
-    }else{
-        $notification = array(
-            'message' => "Your file has been not created! please contact with library.",
-            'alert-type' => 'success'
-
-        );
-        Session::flash('notification',$notification);
-        return redirect()->back();
-    }
-}else{
-    $notification = array(
-        'message' => "You can  over your maximum $download->download books, but if you still want to download please contact the Library Officer's or Submit the request through Feedback",
-        'alert-type' => 'success'
-    );
-    Session::flash('notification',$notification);
-    return redirect()->back();
-        
-        
-        //  $id = $request->input('id');
-        // $slug = $request->input('slug');
-        // $item = Item::where('id', $id)->where('slug', $slug)->first();
-        // $file = public_path() . "/uploads/item/$item->pdfUrl";
-        // if(file_exists($file)){
-        //     $ext = pathinfo($item->pdfUrl, PATHINFO_EXTENSION);
-        //     $data['item_id'] = $id;
-        //     $data['user_id'] = Auth::id();
-        //     ItemUser::create($data);
-        //     return Response::download($file, "$item->title.$ext");
-        // }else{
-        //     $notification = array(
-        //         'message' => "Your file has been not created! please contact with library.",
-        //         'alert-type' => 'success'
-        //     );
-        //     Session::flash('notification',$notification);
-        //     return redirect()->back();
-         }
     }
 
     public function avatarUpdate(Request $request){
